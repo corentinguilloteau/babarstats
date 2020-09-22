@@ -1,0 +1,44 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
+  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>BabarStats</title>
+    <style>
+        body
+        {
+            margin-left: 10vw;
+            margin-right: 10vw;
+            font-family: 'Roboto', sans-serif;
+            margin-top: 5vh;
+            margin-bottom: 5vh;
+        }
+        .red
+        {
+            background-color: orange !important;      
+        }
+    </style>
+
+</head>
+<body>
+    <button onclick="refreshData()" id="refreshButton">Rafraichir les données</button>
+    <table id="table_id" class="display">
+        <thead>
+            <tr>
+                <th>PK</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Montant</th>
+                <th>Promo</th>
+                <th>Status_bar</th>
+                <th>Infos</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</body>
+<script type="text/javascript" charset="utf8" src="javascripts/bundle.js"></script>
+</html>

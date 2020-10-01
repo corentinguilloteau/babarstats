@@ -44,7 +44,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(5000, () => {
+app.listen(5000, "0.0.0.0", () => {
   console.log(`BabarStats started at http://localhost`)
 })
 

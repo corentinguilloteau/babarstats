@@ -16,7 +16,7 @@ var app = express();
 
 passport.use(new Strategy(
   function(username, password, cb) {
-      if ("test" != password || username != "bar") { return cb(null, false); }
+      if ((process.env.PASSWORD || "test") != password || username != "bar") { return cb(null, false); }
       return cb(null, "bar");
     })
 );

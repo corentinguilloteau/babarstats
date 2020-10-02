@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
+var bcrypt = require ('bcrypt');
 
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
@@ -14,9 +15,16 @@ var dataMan = require('./data');
 
 var app = express();
 
+function hash(password)
+{
+  return bcrypt.hashSync(password, 10);
+}
+
+pass = (process.env.ENV == "PROD") ? process.env.PASSWORD : hash("test");
+
 passport.use(new Strategy(
   function(username, password, cb) {
-      if ((process.env.PASSWORD || "test") != password || username != "bar") { return cb(null, false); }
+      if (!bcrypt.compareSync(password, pass) || username != "bar") { return cb(null, false); }
       return cb(null, "bar");
     })
 );

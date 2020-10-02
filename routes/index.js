@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const auth = require('../auth')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', auth.ensureAuth, function(req, res, next) {
   if(req.app.get("ready") == 0)
   {
     res.render('index');

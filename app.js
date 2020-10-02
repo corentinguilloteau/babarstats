@@ -3,14 +3,35 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const axios = require('axios')
+var passport = require('passport');
+var Strategy = require('passport-local').Strategy;
 
 var indexRouter = require('./routes/index');
 var apiRouter = require('./routes/api');
 var customerRouter = require('./routes/customer/index');
+var loginRouter = require('./routes/login');
 var dataMan = require('./data');
 
 var app = express();
+
+passport.use(new Strategy(
+  function(username, password, cb) {
+      if ("test" != password || username != "bar") { return cb(null, false); }
+      return cb(null, "bar");
+    })
+);
+
+passport.serializeUser(function(user, cb) {
+  cb(null, "bar");
+});
+
+passport.deserializeUser(function(id, cb) {
+  cb(null, "bar")
+});
+
+app.use(require('express-session')({ secret: 'kznekpncaenkcprniacnpq', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +45,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/', loginRouter);
 app.use('/api/', apiRouter);
 app.use('/customer/', customerRouter);
 

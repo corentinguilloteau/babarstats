@@ -2,15 +2,16 @@ var express = require('express');
 var router = express.Router();
 const axios = require('axios');
 const dataMan = require('../data')
+const auth = require('../auth')
 
 /* GET customers */
-router.get('/customers', function(req, res, next) {
+router.get('/customers', auth.ensureAuth, function(req, res, next) {
   res.status(200);
   res.end(JSON.stringify(req.app.get("customers")));
 });
 
 /* GET customer data */
-router.get('/customer/:id', function(req, res, next) {
+router.get('/customer/:id', auth.ensureAuth, function(req, res, next) {
     result = [];
 
     for(item of req.app.get("customers"))
@@ -26,7 +27,7 @@ router.get('/customer/:id', function(req, res, next) {
 });
 
 /* GET purchase data */
-router.get('/purchase/:id', function(req, res, next) {
+router.get('/purchase/:id', auth.ensureAuth, function(req, res, next) {
     result = [];
 
     for(item of req.app.get("purchases"))
@@ -42,7 +43,7 @@ router.get('/purchase/:id', function(req, res, next) {
 });
 
 /* GET payment data */
-router.get('/payment/:id', function(req, res, next) {
+router.get('/payment/:id', auth.ensureAuth, function(req, res, next) {
     result = [];
 
     for(item of req.app.get("payments"))
@@ -58,13 +59,13 @@ router.get('/payment/:id', function(req, res, next) {
 });
 
 /* GET payments */
-router.get('/payments', function(req, res, next) {
+router.get('/payments', auth.ensureAuth, function(req, res, next) {
     res.status(200);
     res.end(JSON.stringify(req.app.get("payments")));
 });
 
 /* GET refresh data */
-router.get('/refresh', function(req, res, next) {
+router.get('/refresh', auth.ensureAuth, function(req, res, next) {
     dataMan.loadData(req.app)
     .then(() => {
         res.status(200);

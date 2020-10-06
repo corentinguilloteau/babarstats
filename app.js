@@ -13,6 +13,8 @@ var customerRouter = require('./routes/customer/index');
 var loginRouter = require('./routes/login');
 var dataMan = require('./data');
 
+var ipfilter = require('express-ipfilter').IpFilter;
+
 var app = express();
 
 function hash(password)
@@ -51,6 +53,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const ips = ['137.194.0.0/16'];
+
+app.use(ipfilter(ips, { mode: 'allow' }))
 
 app.use('/', indexRouter);
 app.use('/', loginRouter);

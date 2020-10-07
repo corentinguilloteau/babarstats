@@ -60,7 +60,7 @@ let clientIp = function(req, res) {
   return req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for']).split(',')[0] : ""
 }
 
-const ips = ['137.194.0.0/16'];
+const ips = ['137.194.0.0/16', '2a04:8ec0::/48'];
 
 app.use(ipfilter(ips, { id: clientIp, mode: 'allow'}))
 

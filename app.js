@@ -55,9 +55,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+let clientIp = function(req, res) {
+  return req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for']).split(',')[0] : ""
+}
+
 const ips = ['137.194.0.0/16'];
 
-app.use(ipfilter(ips, { mode: 'allow'}))
+app.use(ipfilter(ips, { id: clientIp, mode: 'allow'}))
 
 app.use('/', indexRouter);
 app.use('/', loginRouter);

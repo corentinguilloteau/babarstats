@@ -79,6 +79,9 @@ app.use(function(err, req, res, next) {
     //res.send('Access forbidden');
     //res.end();
     res.render('error');
+
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
   } else {
     // set locals, only providing error in development
     res.locals.message = err.message;

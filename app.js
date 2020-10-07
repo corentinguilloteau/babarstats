@@ -60,12 +60,13 @@ let clientIp = function(req, res) {
   return req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for']).split(',')[0] : ""
 }
 
-const ips = ['137.194.0.0/16', '2a04:8ec0::/32'];
+const ips = ['137.194.0.1/16', '2a04:8ec0::/32'];
 
 app.use(ipfilter({ id: clientIp, 
   forbidden: 'You are not authorized to access this page.',
   strict: false,
-  filter: ips
+  filter: ips,
+  mode: 'allow'
 }))
 
 app.use('/', indexRouter);
@@ -107,7 +108,6 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(80, "0.0.0.0", () => {
-  console.log(hash("amouratamaman"))
   console.log(`BabarStats started at http://localhost`)
 })
 

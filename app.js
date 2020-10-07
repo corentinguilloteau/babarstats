@@ -79,11 +79,15 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
 
+  console.log(req.headers);
+
   if (err instanceof IpDeniedError) {
     res.status(403);
     //res.send('Access forbidden');
     //res.end();
     res.render('error');
+
+    
 
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};

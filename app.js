@@ -62,7 +62,7 @@ let clientIp = function(req, res) {
 
 const ips = ['137.194.0.0/16', '2a04:8ec0::/48'];
 
-app.use(ipfilter(ips, { id: clientIp, 
+app.use(ipfilter({ id: clientIp, 
   forbidden: 'You are not authorized to access this page.',
   strict: false,
   filter: whitelist_ips

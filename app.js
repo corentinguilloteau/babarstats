@@ -23,7 +23,7 @@ function hash(password)
   return bcrypt.hashSync(password, 10);
 }
 
-pass = (process.env.ENV == "PROD") ? "$2y$10$hNrj9zgD08idp9uyt.ijOOTm1Sv3MH/Us88YwOBhyzIHukJDAGRG6" : hash("test");
+pass = (process.env.ENV == "PROD") ? "$2y$10$myp2nZ4ac.llgKyGbeqexejpbcmAhc1VDtLI54vczdtsVuRRWr0CW" : hash("test");
 
 passport.use(new Strategy(
   function(username, password, cb) {
@@ -60,7 +60,7 @@ let clientIp = function(req, res) {
   return req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for']).split(',')[0] : ""
 }
 
-const ips = ['137.194.0.0/16', '2a04:8ec0::/48'];
+const ips = ['137.194.0.0/16', '2a04:8ec0::/32'];
 
 app.use(ipfilter({ id: clientIp, 
   forbidden: 'You are not authorized to access this page.',

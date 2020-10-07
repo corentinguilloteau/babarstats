@@ -16,8 +16,27 @@ $(document).ready(function ()
         {
             "createdRow": function(row, data, dataIndex){
                 if(data[5] ==  1){
-                    $(row).addClass('red');
+                    if(data[4] == 2023)
+                    {
+                        $(row).addClass('blue');
+                    }
+                    else
+                    {
+                        $(row).addClass('green');
+                    }
+                    
                 }
+                else
+                {
+                    if(data[4] == 2023)
+                    {
+                        if(data[5] ==  1){
+                            $(row).addClass('blue');
+                        }
+                    }
+                }
+                
+                
             },
             "columnDefs": [
                 { 

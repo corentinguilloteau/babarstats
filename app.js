@@ -23,7 +23,7 @@ function hash(password)
   return bcrypt.hashSync(password, 10);
 }
 
-pass = (process.env.ENV == "PROD") ? "$2y$10$myp2nZ4ac.llgKyGbeqexejpbcmAhc1VDtLI54vczdtsVuRRWr0CW" : hash("test");
+pass = (process.env.ENV == "PROD") ? "$2b$10$Pzk52NHvGeQ.4FMHVXICwOPLkiGCLk7adMS..er5D474foaXNsSwa" : hash("test");
 
 passport.use(new Strategy(
   function(username, password, cb) {
@@ -107,6 +107,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.listen(80, "0.0.0.0", () => {
+  console.log(hash("amouratamaman"))
   console.log(`BabarStats started at http://localhost`)
 })
 

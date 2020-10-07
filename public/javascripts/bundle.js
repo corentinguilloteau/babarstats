@@ -18,11 +18,11 @@ $(document).ready(function ()
                 if(data[5] ==  1){
                     if(data[4] == 2023)
                     {
-                        $(row).addClass('blue');
+                        $(row).addClass('red');
                     }
                     else
                     {
-                        $(row).addClass('green');
+                        $(row).addClass('orange');
                     }
                     
                 }
@@ -31,7 +31,7 @@ $(document).ready(function ()
                     if(data[4] == 2023)
                     {
                         if(data[5] ==  1){
-                            $(row).addClass('blue');
+                            $(row).addClass('green');
                         }
                     }
                 }

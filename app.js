@@ -76,8 +76,9 @@ app.use(function(err, req, res, next) {
 
   if (err instanceof IpDeniedError) {
     res.status(403);
-    res.send('Access forbidden');
-    res.end();
+    //res.send('Access forbidden');
+    //res.end();
+    res.render('error');
   } else {
     // set locals, only providing error in development
     res.locals.message = err.message;

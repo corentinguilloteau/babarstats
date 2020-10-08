@@ -10,21 +10,43 @@ function parseData()
     $.ajax({url: "../api/purchase/" + splitted_url[splitted_url.length - 1] , success: function(result)
         {
             data = []
+            hist = []
 
             purchases = JSON.parse(result);
 
             total = 0;
+            sub_total = 0;
+
+            current_date = moment(purchases[0].timestamp);
 
             for(item of purchases)
             {
                 total++;
-
+                
                 data.push({x: moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss'), y: total});
+
+                date = moment(item.timestamp);
+                date.subtract(4, 'hours');
+
+                console.log(date);
+                console.log(date.dayOfYear());
+
+                if(date.dayOfYear() != current_date.dayOfYear() || date.year() != current_date.year())
+                {
+                  hist.push({x: current_date.format('YYYY-MM-DD') + " 00:00:00", y: sub_total})
+                  current_date = date;
+                  sub_total = 0;
+                  sub_total++;
+                }
+                else
+                {
+                  sub_total++;
+                }
             }
 
-            console.log(data)
+            hist.push({x: current_date.format('YYYY-MM-DD') + " 00:00:00", y: sub_total})
 
-            display(data);
+            display(data, hist);
         }
     });
 }
@@ -39,7 +61,7 @@ function unpack(rows, key)
     return rows.map(function(row) { return row[key]; });
 }
 
-function display(data)
+function display(data, hist)
 {
     var trace = {
         type: "scatter",
@@ -50,12 +72,21 @@ function display(data)
         line: {color: '#EF78B1'}
     }
 
-    console.log(trace)
-    console.log(data[0].x)
-    console.log(getDate(data[0].x))
+    console.log(hist)
+
+    var hist_trace = {
+      x: unpack(hist, 'x'),
+      y: unpack(hist, 'y'),
+      name: 'Consos journalières',
+      yaxis: "y2",
+      type: "bar", 
+    };
 
     var layout = {
         title: 'Nombre de consos',
+        bargap: 0.1, 
+        bargroupgap: 0.2, 
+        barmode: "overlay",
         xaxis: {
           autorange: true,
           range: [getDate(data[0].x), getDate(data[data.length - 1].x)],
@@ -78,12 +109,20 @@ function display(data)
           type: 'date'
         },
         yaxis: {
+          title: "Consos cumulées",
           autorange: true,
-          type: 'linear'
+          type: 'linear',
+          overlaying: 'y2',
+        },
+        yaxis2: {
+          title: 'Consos journalières',
+          titlefont: {color: 'rgb(255, 127, 14)'},
+          tickfont: {color: 'rgb(255, 127, 14)'},
+          side: 'right'
         }
       };
 
       console.log(layout)
 
-      Plotly.newPlot('graph', [trace], layout);
+      Plotly.newPlot('graph', [trace, hist_trace], layout);
 }

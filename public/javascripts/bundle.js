@@ -15,24 +15,23 @@ $(document).ready(function ()
     $('#table_id').DataTable(
         {
             "createdRow": function(row, data, dataIndex){
-                if(data[5] ==  1){
-                    if(data[4] == 2023)
+                if(data[4] ==  1)
+                {
+                    if(data[3] == 2023)
                     {
-                        $(row).addClass('red');
+                        $(row).children().addClass('red');
                     }
                     else
                     {
-                        $(row).addClass('orange');
+                        $(row).children().addClass('orange');
                     }
                     
                 }
                 else
                 {
-                    if(data[4] == 2023)
+                    if(data[3] ==  2023)
                     {
-                        if(data[5] ==  1){
-                            $(row).addClass('green');
-                        }
+                        $(row).children().addClass('green');
                     }
                 }
                 
@@ -40,7 +39,7 @@ $(document).ready(function ()
             },
             "columnDefs": [
                 { 
-                    "visible": false, "targets": 5
+                    "visible": false, "targets": 4
                 },
                 { 
                     "visible": false, "targets": 0
@@ -131,7 +130,7 @@ function loadCustomer(item)
         }
     }
     
-    customer = [item.pk, item.lastname, item.firstname, (customerTotalPayments - parseInt(item.balance*100))/100, item.year, bar];
+    customer = [item.pk, item.nickname, (customerTotalPayments - parseInt(item.balance*100))/100, item.year, bar];
 
     data.push(customer);
 
@@ -150,7 +149,7 @@ function refreshData()
         button.prop("disabled", false);
         button.html("Rafraichir les données");
 
-        load();
+        window.location.href="./";
     }});
 
 }

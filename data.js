@@ -23,6 +23,9 @@ module.exports = {
             {
                 app.set("purchases", response.data);
                 app.set("ready", 0);
+                var date = new Date()
+                date.setTime(new Date().getTime() + 2*60*60*1000)
+                app.set("latest_update", date.toISOString().replace(/T/, ' ').replace(/\..+/, ''));
                 console.log("Data is ready !")
             })
             .catch(function(error)

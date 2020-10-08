@@ -6,7 +6,7 @@ const auth = require('../auth')
 router.get('/', auth.ensureAuth, function(req, res, next) {
   if(req.app.get("ready") == 0)
   {
-    res.render('index');
+    res.render('index', {latest_update: req.app.get("latest_update")});
   }
   else
   {

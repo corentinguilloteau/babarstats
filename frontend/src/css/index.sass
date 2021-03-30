@@ -1,0 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+  
+html, body 
+  margin: 0
+  font-family: Poppins,Helvetica Neue,Arial,sans-serif
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  min-height: 100%
+
+body
+  font-size: .9375rem
+  font-weight: 400
+  line-height: 1.625
+  color: #6c757d
+  text-align: left
+  background-color: #F7F9FC
+
+a, p
+  color: #6c757d
+
+h1, h2, h3, h4, h5, h6
+  margin-bottom: .5rem
+  font-weight: 600
+  line-height: 1.2
+  color: #495057
+
+h3
+  font-size: 1.3rem
+
+h5
+  font-size: .95rem
+  font-weight: 600
+
+#wrapper
+  align-items: stretch
+  display: flex
+  flex-direction: row
+  min-height: 100%
+
+.main
+  display: flex
+  width: 100%
+  height: 100vh
+  min-width: 0
+  transition: margin-left .35s ease-in-out,left .35s ease-in-out,margin-right .35s ease-in-out,right .35s ease-in-out
+  flex-direction: column
+  overflow: scroll
+
+@media (max-width: 991.98px)
+  .main 
+    overflow-y: hidden
+
+
+.navbar
+  position: relative
+  padding: .875rem 1.25rem
+  display: flex
+  align-items: center
+  flex-flow: row nowrap
+  justify-content: flex-start
+  border-bottom: 0
+  box-shadow: 0 0 2rem 0 rgba(41,48,66,.1)
+  background: #fff
+
+@media (max-width: 991.98px)
+  .navbar 
+    width: 100vw
+
+
+.sidebar-toggle
+  cursor: pointer
+  width: 26px
+  height: 26px
+  display: flex
+  margin-right: 1rem
+  font-size: 24px
+
+.hamburger, .hamburger, .hamburger
+  position: relative
+  cursor: pointer
+  width: 24px
+  color: #495057
+  transition: background .1s ease-in-out,color .15s ease-in-out
+  &:hover
+    color: #3f80ea
+
+.content
+  padding: 2.5rem 2.5rem 1.5rem
+  flex: 1
+  direction: ltr
+
+@media (max-width: 1199.98px)
+  .content 
+    padding: 1.5rem
+
+@media (max-width: 991.98px)
+  .content 
+    width: 100vw
+    max-width: 100vw
+
+
+*, :after, :before 
+  box-sizing: border-box

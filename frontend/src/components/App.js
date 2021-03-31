@@ -2,7 +2,7 @@ import '../css/App.css';
 import Users from './Users';
 import React from "react";
 //import User from './User';
-//import Drinks from './Drinks';
+import Drinks from './Drinks';
 //import Drink from './Drink';
 import { Switch, Route } from 'react-router-dom';
 
@@ -18,9 +18,10 @@ class App extends React.Component {
           <div className="content">
             <Switch>
               <Route exact path='/' component={Users} />
-              {/*<Route exact path='/users' component={Users} />
-              <Route path='/user/:id' component={User} />
+              <Route exact path='/users' component={Users} />
               <Route exact path='/drinks' component={Drinks} />
+              {/*<Route path='/users/:id' component={User} />
+              
       <Route exact path='/devices/:id' component={Drink} />*/}
             </Switch>
           </div>

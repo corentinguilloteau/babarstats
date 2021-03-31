@@ -27,7 +27,7 @@ class Main extends React.Component
       const isSidebarCollapsed = this.state.isSidebarCollapsed;
       return (<BrowserRouter>
                 <React.StrictMode>
-                  <Sidebar collapsed={isSidebarCollapsed} items={[{id: 0, name: 'Tableau de bord', icon: 'home', link: '/'}, {id: 1, name: 'Clients', icon: 'home', link: '/users'}, {id: 2, name: 'Boissons', icon: 'bolt', link: '/drinks'}]} activeItemId={0} />
+                  <Sidebar collapsed={isSidebarCollapsed} items={[{id: 0, name: 'Tableau de bord', icon: 'home', link: '/'}, {id: 1, name: 'Clients', icon: 'users', link: '/users'}, {id: 2, name: 'Boissons', icon: 'bolt', link: '/drinks'}]} activeItemId={0} />
                   <div className="main">
                     <nav className="navbar">
                       <div className="sidebar-toggle">

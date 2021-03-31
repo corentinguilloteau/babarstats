@@ -25,24 +25,40 @@ module.exports = {
 
 								return axios
 									.get(
-										"https://babar.rezel.net/api/purchase/?format=json"
+										"https://babar.rezel.net/api/product/?format=json"
 									)
 									.then(function (response) {
-										app.set("purchases", response.data);
-										app.set("ready", 0);
-										var date = new Date();
-										date.setTime(
-											new Date().getTime() +
-												2 * 60 * 60 * 1000
-										);
-										app.set(
-											"latest_update",
-											date
-												.toISOString()
-												.replace(/T/, " ")
-												.replace(/\..+/, "")
-										);
-										console.log("Data is ready !");
+										app.set("products", response.data);
+
+										return axios
+											.get(
+												"https://babar.rezel.net/api/purchase/?format=json"
+											)
+											.then(function (response) {
+												app.set(
+													"purchases",
+													response.data
+												);
+												app.set("ready", 0);
+												var date = new Date();
+												date.setTime(
+													new Date().getTime() +
+														2 * 60 * 60 * 1000
+												);
+												app.set(
+													"latest_update",
+													date
+														.toISOString()
+														.replace(/T/, " ")
+														.replace(/\..+/, "")
+												);
+												console.log("Data is ready !");
+											})
+											.catch(function (error) {
+												//Erreur de chargement des données
+												app.set("ready", 2);
+												console.log(error);
+											});
 									})
 									.catch(function (error) {
 										//Erreur de chargement des données

@@ -1,6 +1,7 @@
 import React from "react";
 import "../css/App.css";
 import InformationCard from "./InformationCard";
+import TableCard from './TableCard';
 
 class User extends React.Component {
 	constructor(props) {
@@ -88,6 +89,22 @@ class User extends React.Component {
                         color="yellow"
 					/>
 				</div>
+                <div className="row">
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique" apiURL={ 'http://localhost:5000/api/clients/' +
+							this.props.match.params.id + '/history'} pageSize={10} header={
+                        [
+                            { name: "Produit", apiKey: "product" },
+                            { name: "Date", apiKey: "datetime" }
+                        ]
+                    }/>
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommation" apiURL={ 'http://localhost:5000/api/clients/' +
+							this.props.match.params.id + '/top_products'} pageSize={10} header={
+                        [
+                            { name: "Produit", apiKey: "product" },
+                            { name: "Quantité", apiKey: "quantity" }
+                        ]
+                    }/>
+                </div>
 			</div>
 		);
 	}

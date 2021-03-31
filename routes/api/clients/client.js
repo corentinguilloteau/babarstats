@@ -49,6 +49,78 @@ router.get("/:id/spent", function (req, res, next) {
 	);
 });
 
+/* GET client purchase history */
+router.get("/:id/history", function (req, res, next) {
+	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
+
+	if (!customer) {
+		res.status(404);
+		res.end();
+
+		return;
+	}
+
+    var purchases = req.app.get("purchases").filter(p => parseInt(p.customer) == parseInt(customer.pk));
+
+    var formattedPurchases = purchases.map((p) =>
+    {
+        var timestamp = new Date(Date.parse(p.timestamp));
+        
+        var mm = timestamp.getMonth() + 1; // getMonth() is zero-based
+        var dd = timestamp.getDate();
+        var hh = timestamp.getHours();
+        var MM = timestamp.getMinutes();
+
+        var date = "Le " + (dd>9 ? '' : '0') + dd + "/" + (mm>9 ? '' : '0') + mm + "/" + timestamp.getFullYear() + " à " + (hh>9 ? '' : '0') + hh + "h" + (MM>9 ? '' : '0') + MM;
+
+        var product = req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(p.product));
+
+        var newP = { product: product.name, datetime: date };
+
+        return newP;
+    });
+
+	res.status(200);
+	res.end(JSON.stringify(formattedPurchases.reverse()));
+});
+
+/* GET client top product */
+router.get("/:id/top_products", function (req, res, next) {
+	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
+
+	if (!customer) {
+		res.status(404);
+		res.end();
+
+		return;
+	}
+
+    var purchases = req.app.get("purchases").filter(p => parseInt(p.customer) == parseInt(customer.pk));
+
+    var counts = purchases.reduce((p, c) => {
+        var product = c.product;
+        if (!p.hasOwnProperty(product)) {
+          p[product] = 0;
+        }
+        p[product]++;
+        return p;
+      }, {});
+
+      var countsExtended = Object.keys(counts).map(k => {
+        return {product: k, count: counts[k]}; });
+
+    var mappedCounts = countsExtended.map(c => {
+        var product = req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(c.product));
+
+        return { product: product.name, quantity: c.count };
+    })
+
+    mappedCounts = mappedCounts.sort(function(a, b){return b.quantity - a.quantity})
+
+	res.status(200);
+	res.end(JSON.stringify(mappedCounts));
+});
+
 /* GET client promo ranking */
 router.get("/:id/rank/promo", function (req, res, next) {
     var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));

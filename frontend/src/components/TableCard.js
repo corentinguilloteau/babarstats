@@ -78,7 +78,7 @@ class TableCard extends React.Component {
 	render() {
 		console.log(this.state.rowData);
 		return (
-			<div className="col d-flex">
+			<div className={ "d-flex" + this.props.bootstrapSubdiv } >
 				<div className="card">
 					<div className="card-header">
 						<h5 className="car-title mt-2"> {this.props.name} </h5>
@@ -90,7 +90,7 @@ class TableCard extends React.Component {
 								rowData={this.state.rowData}
                                 onGridReady={this.onGridReady.bind(this)}
 								pagination={true}
-								paginationPageSize={30}
+								paginationPageSize={this.props.pageSize || 30}
                                 domLayout={'autoHeight'}
                                 style={{ width: '100%', height: '100%;' }}
                                 fullWidthCellRenderer={'fullWidthCellRenderer'}>

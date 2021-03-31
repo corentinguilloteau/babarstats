@@ -16,18 +16,18 @@ class Users extends React.Component {
         <div className="container-fluid">
             <div className="row mb-2 mb-xl-3">
                 <div className="col-auto d-none d-sm-block">
-                    <h3>{'Clients'}</h3>
+                    <h3>{'Produits'}</h3>
                 </div>
             </div>
             <div className="row">
-                <TableCard name="Clients" apiURL='http://localhost:5000/api/drinks' baseURL='/drinks/' buttonText="Détails" idField="id" header={
+                <TableCard name="Produits" apiURL='http://localhost:5000/api/products' baseURL='/products/' buttonText="Détails" idField="id" header={
                     [
-                        { name: "Surnom", apiKey: "surname" },
-                        { name: "Montant dépensé", apiKey: "spent" },
-                        { name: "Promotion", apiKey: "year" },
-                        { name: "Status", apiKey: "status" }
+                        { name: "Nom", apiKey: "name" },
+                        { name: "Nombre vendu", apiKey: "count" },
+                        { name: "Prix", apiKey: "price" }
                     ]
-                }/>
+                }
+                defaultSort={{ col: "count", sort: "desc" }}/>
             </div> 
         </div>
       );

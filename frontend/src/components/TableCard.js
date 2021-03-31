@@ -56,11 +56,22 @@ class TableCard extends React.Component {
 	}
 
     onGridReady(params) {
-        this.gridApi = params.api;
-        this.columnApi = params.columnApi;
-        this.gridApi.sizeColumnsToFit();
+        params.api.sizeColumnsToFit();
         window.onresize = () => {
-            this.gridApi.sizeColumnsToFit();
+            params.api.sizeColumnsToFit();
+        }
+        
+        if(this.props.defaultSort)
+        {
+            params.columnApi.applyColumnState({
+                state: [
+                  {
+                    colId: this.props.defaultSort.col,
+                    sort: this.props.defaultSort.sort
+                  }
+                ],
+                defaultState: { sort: null }
+              });
         }
     }
 
@@ -77,7 +88,7 @@ class TableCard extends React.Component {
 							className="ag-theme-material">
 							<AgGridReact
 								rowData={this.state.rowData}
-                                onGridReady={this.onGridReady}
+                                onGridReady={this.onGridReady.bind(this)}
 								pagination={true}
 								paginationPageSize={30}
                                 domLayout={'autoHeight'}

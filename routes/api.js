@@ -5,10 +5,10 @@ const dataMan = require("../data");
 const auth = require("../auth");
 
 var clientsRouter = require("./api/clients/clients");
-var drinksRouter = require("./api/drinks/drinks");
+var productsRouter = require("./api/products/products");
 
 router.use("/", clientsRouter);
-router.use("/", drinksRouter);
+router.use("/", productsRouter);
 
 /* GET customer data */
 router.get("/customer/:id", auth.ensureAuth, function (req, res, next) {

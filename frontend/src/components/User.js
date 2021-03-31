@@ -1,6 +1,4 @@
 import React from "react";
-import TimeSerieCard from "./TimeSerieCard";
-import ControlCard from "./ControlCard";
 import "../css/App.css";
 import InformationCard from "./InformationCard";
 
@@ -14,7 +12,7 @@ class User extends React.Component {
 
 	getName() {
 		fetch(
-			"http://localhost:5000/api/users/" +
+			"http://localhost:5000/api/clients/" +
 				this.props.match.params.id +
 				"/profil",
 			{
@@ -31,13 +29,15 @@ class User extends React.Component {
 				(result) => {
 					console.log(result);
 					this.setState({
-						surname: result.surname,
+						surname: result.nickname,
 					});
 				},
 				// Note: it's important to handle errors here
 				// instead of a catch() block so that we don't swallow
 				// exceptions from actual bugs in components.
-				(error) => {}
+				(error) => {
+                    console.log(error)
+                }
 			);
 	}
 
@@ -56,7 +56,7 @@ class User extends React.Component {
 				<div className="row">
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/users/" +
+							"http://localhost:5000/api/clients/" +
 							this.props.match.params.id +
 							"/spent"
 						}
@@ -67,7 +67,7 @@ class User extends React.Component {
 					/>
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/users/" +
+							"http://localhost:5000/api/clients/" +
 							this.props.match.params.id +
 							"/rank/promo"
 						}
@@ -78,7 +78,7 @@ class User extends React.Component {
 					/>
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/users/" +
+							"http://localhost:5000/api/clients/" +
 							this.props.match.params.id +
 							"/rank/total"
 						}

@@ -63,7 +63,7 @@ h5 {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  overflow: scroll;
+  overflow: auto;
 }
 
 @media (max-width: 991.98px) {
@@ -92,6 +92,7 @@ h5 {
   -webkit-box-shadow: 0 0 2rem 0 rgba(41, 48, 66, 0.1);
           box-shadow: 0 0 2rem 0 rgba(41, 48, 66, 0.1);
   background: #fff;
+  z-index: 100;
 }
 
 @media (max-width: 991.98px) {
@@ -130,6 +131,7 @@ h5 {
       -ms-flex: 1;
           flex: 1;
   direction: ltr;
+  overflow: auto;
 }
 
 @media (max-width: 1199.98px) {

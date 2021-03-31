@@ -15,9 +15,11 @@ class InformationCard extends React.Component {
             'Content-Type': 'application/json',
             'Accept': 'application/plain-text'
            }
-        }).then(
+        }).then((res) => { return res.text(); })
+        .then(
             
             (result) => {
+                console.log(result)
               this.setState({
                 value: result
               });
@@ -41,7 +43,8 @@ class InformationCard extends React.Component {
                     <div className="card-body py-4">
                         <div className="media">                              
                             <div className="media-body">
-                                <h3 className="mb-2">{this.props.prefix + this.state.value + this.props.suffix}</h3>
+                                <h3 className="mb-2">{(this.props.prefix || "") + this.state.value + (this.props.suffix || "")}</h3>
+                                <p className="mb-2">{this.props.name}</p>
                             </div>
                             <div className="icon-block ml-3">
                                 <div className={"round d-flex align-items-center justify-content-center " + (this.props.color)}>

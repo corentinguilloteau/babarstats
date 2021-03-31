@@ -41,11 +41,11 @@ class Main extends React.Component {
 								id: 1,
 								name: "Clients",
 								icon: "users",
-								link: "/users",
+								link: "/clients",
 							},
 							{
 								id: 2,
-								name: "Boissons",
+								name: "Produits",
 								icon: "beer",
 								link: "/products",
 							},

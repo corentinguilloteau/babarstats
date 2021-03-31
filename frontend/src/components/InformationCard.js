@@ -1,33 +1,55 @@
 import React from "react";
 import '../css/Card.css';
-import { Link } from 'react-router-dom';
 
 class InformationCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: ""
         };
     }
+
+    getValue() {
+        fetch(this.props.apiURL, {headers : 
+          { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/plain-text'
+           }
+        }).then(
+            
+            (result) => {
+              this.setState({
+                value: result
+              });
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+            }
+          )
+      }
+
+      componentDidMount() {
+          this.getValue();
+      }
 
     render() {
       return (
             <div name={this.props.name}  className="col-12 col-sm-6 col-xxl-3 d-flex">
-                <div className="card clickable">
-                    <Link className="no-link" to={this.props.url}>
-                        <div className="card-body py-4">
-                            <div className="media">                              
-                                <div className="media-body">
-                                    <h3 className="mb-2">{this.props.value}</h3>
-                                    <p className="mb-2">{this.props.name}</p>
-                                </div>
-                                <div className="icon-block ml-3">
-                                    <div className={"round d-flex align-items-center justify-content-center " + (this.props.color)}>
-                                        <i className={"fas fa-fw fa-" + (this.props.icon)}></i>
-                                    </div>
+                <div className="card">
+                    <div className="card-body py-4">
+                        <div className="media">                              
+                            <div className="media-body">
+                                <h3 className="mb-2">{this.props.prefix + this.state.value + this.props.suffix}</h3>
+                            </div>
+                            <div className="icon-block ml-3">
+                                <div className={"round d-flex align-items-center justify-content-center " + (this.props.color)}>
+                                    <i className={"fas fa-fw fa-" + (this.props.icon)}></i>
                                 </div>
                             </div>
                         </div>
-                    </Link>
+                    </div>
                 </div>
             </div>
       );

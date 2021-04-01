@@ -6,64 +6,32 @@ const auth = require("../auth");
 
 var clientsRouter = require("./api/clients/clients");
 var productsRouter = require("./api/products/products");
+var purchasesRouter = require("./api/purchases/purchases");
 
 router.use("/", clientsRouter);
 router.use("/", productsRouter);
+router.use("/", purchasesRouter);
 
-/* GET customer data */
-router.get("/customer/:id", auth.ensureAuth, function (req, res, next) {
-	result = [];
-
-	for (item of req.app.get("customers")) {
-		if (item.pk == req.params.id) {
-			result.push(item);
-		}
-	}
-
+/* GET latest refresh */
+router.get("/update", auth.ensureAuth, function (req, res, next) {
 	res.status(200);
-	res.end(JSON.stringify(result));
+    res.send(req.app.get("latest_update").toString());
 });
 
-/* GET purchase data */
-router.get("/purchase/:id", auth.ensureAuth, function (req, res, next) {
-	result = [];
-
-	for (item of req.app.get("purchases")) {
-		if (item.customer == req.params.id) {
-			result.push(item);
-		}
-	}
-
+/* GET data status */
+router.get("/status", auth.ensureAuth, function (req, res, next) {
 	res.status(200);
-	res.end(JSON.stringify(result));
+    res.send(req.app.get("ready").toString());
 });
 
-/* GET payment data */
-router.get("/payment/:id", auth.ensureAuth, function (req, res, next) {
-	result = [];
-
-	for (item of req.app.get("payments")) {
-		if (item.customer == req.params.id) {
-			result.push(item);
-		}
-	}
-
-	res.status(200);
-	res.end(JSON.stringify(result));
-});
-
-/* GET payments */
-router.get("/payments", auth.ensureAuth, function (req, res, next) {
-	res.status(200);
-	res.end(JSON.stringify(req.app.get("payments")));
-});
-
-/* GET refresh data */
-router.get("/refresh", auth.ensureAuth, function (req, res, next) {
+/* POST refresh data */
+router.post("/update", auth.ensureAuth, function (req, res, next) {
 	dataMan.loadData(req.app).then(() => {
 		res.status(200);
 		res.end("");
 	});
 });
+
+//, auth.ensureAuth
 
 module.exports = router;

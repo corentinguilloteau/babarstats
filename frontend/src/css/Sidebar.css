@@ -1,4 +1,11 @@
 .sidebar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column nowrap;
+          flex-flow: column nowrap;
   min-width: 260px;
   max-width: 260px;
   -webkit-transition: margin-left .35s ease-in-out,left .35s ease-in-out,margin-right .35s ease-in-out,right .35s ease-in-out;
@@ -27,10 +34,39 @@
 .sidebar-top {
   width: 100%;
   height: 3.425rem;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
 }
 
 .sidebar-nav {
   padding-left: 0;
+  -webkit-box-flex: 1;
+      -ms-flex: auto;
+          flex: auto;
+}
+
+.sidebar-footer {
+  width: 100%;
+  -webkit-box-flex: 0;
+      -ms-flex: none;
+          flex: none;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.clickable {
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.clickable:hover {
+  color: #e9ecef;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  cursor: pointer;
 }
 
 a.sidebar-link {

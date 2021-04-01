@@ -14,7 +14,7 @@ class TimeSerieCard extends React.Component {
 
 	render() {
 		return (
-			<div name={this.props.name} className="col d-flex">
+			<div name={this.props.name} className={ "d-flex" + this.props.bootstrapSubdiv }>
 				<div className="card">
 					<div className="card-header">
 						<h5 className="car-title mt-2">{this.props.name}</h5>

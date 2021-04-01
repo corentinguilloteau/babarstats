@@ -27,7 +27,7 @@ class Users extends React.Component {
                         { name: "Promotion", apiKey: "year" },
                         { name: "Status", apiKey: "status" }
                     ]
-                }/>
+                } floatingFilter={true} filter={true} sort={true}/>
             </div> 
         </div>
       );

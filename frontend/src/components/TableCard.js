@@ -22,8 +22,6 @@ class TableCard extends React.Component {
 			crossDomain: true,
 			headers: {
 				"Content-Type": "application/json",
-				Accept: "application/json",
-				"Access-Control-Allow-Origin": "*",
 			},
 		})
 			.then((res) => {
@@ -55,10 +53,22 @@ class TableCard extends React.Component {
 		);
 	}
 
-    onGridReady(params) {
-        params.api.sizeColumnsToFit();
-        window.onresize = () => {
+    autosizeColumnsIfNeeded(params){
+        console.log(params)
+        let panel = params.api['gridPanel'];
+        let availableWidth = params.api.gridPanel.eBodyViewport.clientWidth
+        let columns = params.api['gridPanel']['columnController'].getAllDisplayedColumns();
+        let usedWidth = params.api['gridPanel']['columnController'].getWidthOfColsInList(columns);
+
+        if(usedWidth < availableWidth){
             params.api.sizeColumnsToFit();
+        }
+    }
+
+    onGridReady(params) {
+        this.autosizeColumnsIfNeeded(params);
+        window.onresize = () => {
+            this.autosizeColumnsIfNeeded(params);
         }
         
         if(this.props.defaultSort)
@@ -92,14 +102,16 @@ class TableCard extends React.Component {
 								pagination={true}
 								paginationPageSize={this.props.pageSize || 30}
                                 domLayout={'autoHeight'}
-                                style={{ width: '100%', height: '100%;' }}
+                                suppressCellSelection={true}
+                                style={{ "min-width": '100%', height: '100%;' }}
                                 fullWidthCellRenderer={'fullWidthCellRenderer'}>
 								{this.props.header.map((h) => (
 									<AgGridColumn
 										headerName={h.name}
 										field={h.apiKey}
-										sortable={true}
-										filter={true}></AgGridColumn>
+										sortable={this.props.sort || false}
+										filter={this.props.filter || false}
+                                        floatingFilter={this.props.floatingFilter || false}></AgGridColumn>
 								))}
 								{this.props.buttonText && (
 									<AgGridColumn

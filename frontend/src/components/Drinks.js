@@ -27,7 +27,7 @@ class Users extends React.Component {
                         { name: "Prix", apiKey: "price" }
                     ]
                 }
-                defaultSort={{ col: "count", sort: "desc" }}/>
+                defaultSort={{ col: "count", sort: "desc" }} floatingFilter={true} filter={true} sort={true}/>
             </div> 
         </div>
       );

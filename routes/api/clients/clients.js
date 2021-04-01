@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
 const global = require("../../../global");
+const auth = require("../../../auth");
 
 var clientRouter = require("./client");
 
-router.use("/clients/", clientRouter);
+router.use("/clients/", auth.ensureAuth, clientRouter);
 
 /* GET all clients summary */
 router.get("/clients", function (req, res, next) {

@@ -1,13 +1,11 @@
 var express = require("express");
 var router = express.Router();
 const global = require("../../../global");
+const auth = require("../../../auth");
 
 /* GET client profil */
-router.get("/:id/profil", function (req, res, next) {
+router.get("/:id/profil", auth.ensureAuth, function (req, res, next) {
 	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
-
-    console.log(parseInt(req.params.id))
-    console.log(customer)
 
 	if (!customer) {
 		res.status(404);
@@ -21,7 +19,7 @@ router.get("/:id/profil", function (req, res, next) {
 });
 
 /* GET client amount of money spent */
-router.get("/:id/spent", function (req, res, next) {
+router.get("/:id/spent", auth.ensureAuth, function (req, res, next) {
 	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
 
 	if (!customer) {
@@ -50,7 +48,7 @@ router.get("/:id/spent", function (req, res, next) {
 });
 
 /* GET client purchase history */
-router.get("/:id/history", function (req, res, next) {
+router.get("/:id/history", auth.ensureAuth, function (req, res, next) {
 	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
 
 	if (!customer) {
@@ -85,7 +83,7 @@ router.get("/:id/history", function (req, res, next) {
 });
 
 /* GET client purchase history */
-router.get("/:id/purchases", function (req, res, next) {
+router.get("/:id/purchases", auth.ensureAuth, function (req, res, next) {
 	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
 
 	if (!customer) {
@@ -95,14 +93,14 @@ router.get("/:id/purchases", function (req, res, next) {
 		return;
 	}
 
-    var purchases = req.app.get("purchases").filter(p => parseInt(p.customer) == parseInt(customer.pk));
+    var purchases = req.app.get("purchases").filter(p => parseInt(p.customer) == parseInt(customer.pk) );
 
 	res.status(200);
 	res.end(JSON.stringify(purchases));
 });
 
 /* GET client top product */
-router.get("/:id/top_products", function (req, res, next) {
+router.get("/:id/top_products", auth.ensureAuth, function (req, res, next) {
 	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
 
 	if (!customer) {
@@ -139,7 +137,7 @@ router.get("/:id/top_products", function (req, res, next) {
 });
 
 /* GET client promo ranking */
-router.get("/:id/rank/promo", function (req, res, next) {
+router.get("/:id/rank/promo", auth.ensureAuth, function (req, res, next) {
     var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
 
 	if (!customer) {
@@ -159,7 +157,7 @@ router.get("/:id/rank/promo", function (req, res, next) {
 });
 
 /* GET client total ranking */
-router.get("/:id/rank/total", function (req, res, next) {
+router.get("/:id/rank/total", auth.ensureAuth, function (req, res, next) {
     var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
 
 	if (!customer) {

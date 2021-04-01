@@ -12,6 +12,7 @@ class Main extends React.Component {
 
 		this.state = {
 			isSidebarCollapsed: false,
+            serverStatus: -1
 		};
 
 		this.handleSidebarToggle = this.handleSidebarToggle.bind(this);
@@ -21,6 +22,28 @@ class Main extends React.Component {
 		this.setState((state) => ({
 			isSidebarCollapsed: !state.isSidebarCollapsed,
 		}));
+	}
+
+    getStatus() {
+		fetch(
+			"http://localhost:5000/api/status" )
+			.then((res) => {
+				return res.text();
+			})
+			.then(
+				(result) => {
+					this.setState({
+						serverStatus: result,
+					});
+				},
+				(error) => {
+                    console.log(error)
+                }
+			);
+	}
+
+	componentDidMount() {
+		this.getStatus();
 	}
 
 	render() {
@@ -51,6 +74,7 @@ class Main extends React.Component {
 							},
 						]}
 						activeItemId={0}
+                        serverStatus={this.state.serverStatus}
 					/>
 					<div className="main">
 						<nav className="navbar">
@@ -60,7 +84,7 @@ class Main extends React.Component {
 									onClick={this.handleSidebarToggle}></i>
 							</div>
 						</nav>
-						<App />
+						<App serverStatus={this.state.serverStatus} />
 					</div>
 				</React.StrictMode>
 			</BrowserRouter>

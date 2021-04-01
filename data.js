@@ -1,4 +1,5 @@
 const axios = require("axios");
+const global = require("./global");
 
 module.exports = {
 	loadData: function (app) {
@@ -41,16 +42,9 @@ module.exports = {
 												);
 												app.set("ready", 0);
 												var date = new Date();
-												date.setTime(
-													new Date().getTime() +
-														2 * 60 * 60 * 1000
-												);
 												app.set(
 													"latest_update",
-													date
-														.toISOString()
-														.replace(/T/, " ")
-														.replace(/\..+/, "")
+													global.formatDate(date)
 												);
 												console.log("Data is ready !");
 											})

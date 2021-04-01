@@ -2,6 +2,7 @@ import React from "react";
 import InformationCard from "./InformationCard";
 import TableCard from "./TableCard";
 import "../css/App.css";
+import ProductPlotCard from './ProductPlotCard'
 
 class Dashboard extends React.Component {
 	constructor(props) {
@@ -20,38 +21,46 @@ class Dashboard extends React.Component {
 				<div className="row">
 					<InformationCard
 						apiURL={
+							"http://localhost:5000/api/purchases/money/today"
+						}
+						name="Ventes du jour"
+						icon="euro-sign"
+						color="green"
+                        suffix=" €"
+					/>
+                    <InformationCard
+						apiURL={
 							"http://localhost:5000/api/purchases/count/today"
 						}
 						name="Nombre de consos aujourd'hui"
 						icon="beer"
 						color="yellow"
 					/>
-					<InformationCard
+                    <InformationCard
 						apiURL={
-							"http://localhost:5000/api/purchases/money/today"
+							"http://localhost:5000/api/purchases/count/yesterday"
 						}
-						name="Ventes du jour"
-						icon="euro-sign"
-						color="green"
+						name="Nombre de consos hier"
+						icon="beer"
+						color="yellow"
 					/>
 				</div>
 				<div className="row">
-					{/*<PurchasesPlotCard name="Historique des achats" apiURL={
-							"http://localhost:5000/api/purchases/all"
-						}/>*/}
+                    <ProductPlotCard name="Historique des ventes" apiURL={
+							"http://localhost:5000/api/purchases"
+						}
+                        bootstrapSubdiv={"col-12 col-sm-8 d-flex"}/>
 					<TableCard
-						bootstrapSubdiv="col-sm-4 d-flex"
+						bootstrapSubdiv="col-12 col-sm-4 d-flex"
 						name="Dernières consos"
 						apiURL={
-							"http://localhost:5000/api/clients/" +
-							this.props.match.params.id +
-							"/history"
+							"http://localhost:5000/api/purchases/history"
 						}
-						pageSize={7}
+						pageSize={14}
 						header={[
-							{ name: "Surnom", apiKey: "nickname" },
+							{ name: "Surnom", apiKey: "customer" },
 							{ name: "Produit", apiKey: "product" },
-							{ name: "Date", apiKey: "datetime" },
+							{ name: "Date", apiKey: "date" },
 						]}
 					/>
 				</div>

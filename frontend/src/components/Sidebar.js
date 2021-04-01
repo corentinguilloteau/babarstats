@@ -15,9 +15,41 @@ class Sidebar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            activeItemId: props.activeItemId
+            activeItemId: props.activeItemId,
+            latestUpdate: "00/00/00"
         };
     }
+
+    getLatestUpdate() {
+        fetch("http://localhost:5000/api/update", {headers : 
+          { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/plain-text'
+           }
+        }).then((res) => { return res.text(); })
+        .then(
+            
+            (result) => {
+              this.setState({
+                latestUpdate: result
+              });
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+            }
+          )
+      }
+
+      update()
+      {
+        fetch("http://localhost:5000/api/update", { method: "POST" });
+      }
+
+      componentDidMount() {
+          this.getLatestUpdate();
+      }
 
     render() {
       return (
@@ -35,6 +67,15 @@ class Sidebar extends React.Component {
                         )
                     }
                 </ul>
+                <div className="sidebar-footer">
+                        <div className="sidebar-footer-item">Dernière mise à jour le <br/> {this.props.serverStatus === "0" ? this.state.latestUpdate : "N/C"}</div>
+                        <div className="sidebar-footer-item clickable" onClick={this.update}>
+                            Mettre à jour
+                        </div>
+                        <br/>
+                        <div className="sidebar-footer-item">v1.0 - Pour le Baritech</div>
+                        <br/>
+                </div>
         </nav>
       );
     }

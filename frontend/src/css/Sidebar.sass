@@ -1,6 +1,8 @@
 $sidebar-width: 260px
 
 .sidebar
+    display: flex
+    flex-flow: column nowrap
     min-width: $sidebar-width
     max-width: $sidebar-width
     transition: margin-left .35s ease-in-out,left .35s ease-in-out,margin-right .35s ease-in-out,right .35s ease-in-out
@@ -23,9 +25,27 @@ $sidebar-width: 260px
 .sidebar-top
     width: 100%
     height: 3.425rem
+    flex: none
 
 .sidebar-nav
     padding-left: 0
+    flex: auto
+
+.sidebar-footer
+    width: 100%
+    flex: none
+    font-size: 0.8rem
+    text-align: center
+
+.clickable
+    transition: color 0.3s
+    padding-top: 5px
+    padding-bottom: 5px
+
+.clickable:hover
+    color: #e9ecef
+    transition: color 0.3s
+    cursor: pointer
 
 a.sidebar-link
     display: block

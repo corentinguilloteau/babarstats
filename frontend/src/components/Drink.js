@@ -2,21 +2,21 @@ import React from "react";
 import "../css/App.css";
 import InformationCard from "./InformationCard";
 import TableCard from './TableCard';
-import ConsoPlotCard from './ConsoPlotCard'
+import ProductPlotCard from './ProductPlotCard'
 
 class User extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			surname: "",
+			name: "",
 		};
 	}
 
 	getName() {
 		fetch(
-			"http://localhost:5000/api/clients/" +
+			"http://localhost:5000/api/products/" +
 				this.props.match.params.id +
-				"/profil",
+				"/data",
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -30,7 +30,7 @@ class User extends React.Component {
 			.then(
 				(result) => {
 					this.setState({
-						surname: result.nickname,
+						name: result.name,
 					});
 				},
 				// Note: it's important to handle errors here
@@ -51,15 +51,15 @@ class User extends React.Component {
 			<div className="container-fluid">
 				<div className="row mb-2 mb-xl-3">
 					<div className="col-auto d-none d-sm-block">
-						<h3>{this.state.surname}</h3>
+						<h3>{this.state.name}</h3>
 					</div>
 				</div>
 				<div className="row">
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/clients/" +
+							"http://localhost:5000/api/products/" +
 							this.props.match.params.id +
-							"/spent"
+							"/price"
 						}
 						suffix=" €"
 						name="Prix"
@@ -68,9 +68,9 @@ class User extends React.Component {
 					/>
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/clients/" +
+							"http://localhost:5000/api/products/" +
 							this.props.match.params.id +
-							"/rank/promo"
+							"/quantity_sold"
 						}
 						name="Nombre vendu"
 						icon="cash-register"
@@ -78,24 +78,24 @@ class User extends React.Component {
 					/>
 				</div>
                 <div className="row">
-                    <ConsoPlotCard name="Historique des ventes" apiURL={
-							"http://localhost:5000/api/clients/" +
+                    <ProductPlotCard name="Historique des ventes" apiURL={
+							"http://localhost:5000/api/products/" +
 							this.props.match.params.id +
 							"/purchases"
 						}/>
                 </div>
                 <div className="row">
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique des ventes" apiURL={ 'http://localhost:5000/api/clients/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique des ventes" apiURL={ 'http://localhost:5000/api/products/' +
 							this.props.match.params.id + '/history'} pageSize={10} header={
                         [
-                            { name: "Surnom", apiKey: "nickname" },
+                            { name: "Surnom", apiKey: "customer" },
                             { name: "Date", apiKey: "datetime" }
                         ]
                     }/>
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommateur" apiURL={ 'http://localhost:5000/api/clients/' +
-							this.props.match.params.id + '/top_products'} pageSize={10} header={
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommateur" apiURL={ 'http://localhost:5000/api/products/' +
+							this.props.match.params.id + '/top_customers'} pageSize={10} header={
                         [
-                            { name: "Surnom", apiKey: "nickname" },
+                            { name: "Surnom", apiKey: "customer" },
                             { name: "Quantité", apiKey: "quantity" }
                         ]
                     }/>

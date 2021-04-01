@@ -84,6 +84,23 @@ router.get("/:id/history", function (req, res, next) {
 	res.end(JSON.stringify(formattedPurchases.reverse()));
 });
 
+/* GET client purchase history */
+router.get("/:id/purchases", function (req, res, next) {
+	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));
+
+	if (!customer) {
+		res.status(404);
+		res.end();
+
+		return;
+	}
+
+    var purchases = req.app.get("purchases").filter(p => parseInt(p.customer) == parseInt(customer.pk));
+
+	res.status(200);
+	res.end(JSON.stringify(purchases));
+});
+
 /* GET client top product */
 router.get("/:id/top_products", function (req, res, next) {
 	var customer = req.app.get("customers").find((c) => parseInt(c.pk) == parseInt(req.params.id));

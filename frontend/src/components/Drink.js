@@ -62,7 +62,7 @@ class User extends React.Component {
 							"/spent"
 						}
 						suffix=" €"
-						name="Montant dépensé"
+						name="Prix"
 						icon="euro-sign"
                         color="green"
 					/>
@@ -72,42 +72,30 @@ class User extends React.Component {
 							this.props.match.params.id +
 							"/rank/promo"
 						}
-						prefix="#"
-						name="Classement promo"
-						icon="medal"
-                        color="yellow"
-					/>
-					<InformationCard
-						apiURL={
-							"http://localhost:5000/api/clients/" +
-							this.props.match.params.id +
-							"/rank/total"
-						}
-						prefix="#"
-						name="Classement général"
-						icon="trophy"
+						name="Nombre vendu"
+						icon="cash-register"
                         color="yellow"
 					/>
 				</div>
                 <div className="row">
-                    <ConsoPlotCard name="Historique" apiURL={
+                    <ConsoPlotCard name="Historique des ventes" apiURL={
 							"http://localhost:5000/api/clients/" +
 							this.props.match.params.id +
 							"/purchases"
 						}/>
                 </div>
                 <div className="row">
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique" apiURL={ 'http://localhost:5000/api/clients/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique des ventes" apiURL={ 'http://localhost:5000/api/clients/' +
 							this.props.match.params.id + '/history'} pageSize={10} header={
                         [
-                            { name: "Produit", apiKey: "product" },
+                            { name: "Surnom", apiKey: "nickname" },
                             { name: "Date", apiKey: "datetime" }
                         ]
                     }/>
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommation" apiURL={ 'http://localhost:5000/api/clients/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommateur" apiURL={ 'http://localhost:5000/api/clients/' +
 							this.props.match.params.id + '/top_products'} pageSize={10} header={
                         [
-                            { name: "Produit", apiKey: "product" },
+                            { name: "Surnom", apiKey: "nickname" },
                             { name: "Quantité", apiKey: "quantity" }
                         ]
                     }/>

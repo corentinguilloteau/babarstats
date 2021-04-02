@@ -11,12 +11,15 @@ class TableCard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			isLoaded: false,
+			loaded: false,
 			rowData: [],
 		};
 	}
 
 	componentDidMount() {
+        this.setState({
+            loaded: false
+        });
 		fetch(this.props.apiURL, {
 			method: "GET",
 			crossDomain: true,
@@ -31,13 +34,13 @@ class TableCard extends React.Component {
 			.then(
 				(result) => {
 					this.setState({
-						isLoaded: true,
+						loaded: true,
 						rowData: result,
 					});
 				},
 				(error) => {
 					this.setState({
-						isLoaded: true,
+						loaded: false,
 						rowData: [],
 					});
 					console.log(error);
@@ -94,7 +97,14 @@ class TableCard extends React.Component {
 						<h5 className="car-title mt-2"> {this.props.name} </h5>
 					</div>
 					<div className="card-body py-2">
-						<div
+                    {!this.state.loaded && (
+							<div className="spinner-container"><div
+								class="spinner-border text-primary"
+								role="status">
+								<span class="sr-only">Loading...</span>
+							</div></div>
+						)}
+						{this.state.loaded && (<div
 							className="ag-theme-material">
 							<AgGridReact
 								rowData={this.state.rowData}
@@ -122,7 +132,7 @@ class TableCard extends React.Component {
 										)}></AgGridColumn>
 								)}
 							</AgGridReact>
-						</div>
+						</div>)}
 					</div>
 				</div>
 			</div>

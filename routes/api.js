@@ -26,10 +26,10 @@ router.get("/status", auth.ensureAuth, function (req, res, next) {
 
 /* POST refresh data */
 router.post("/update", auth.ensureAuth, function (req, res, next) {
-	dataMan.loadData(req.app).then(() => {
-		res.status(200);
-		res.end("");
-	});
+	dataMan.loadData(req.app);
+
+    res.status(200);
+	res.end("");
 });
 
 //, auth.ensureAuth

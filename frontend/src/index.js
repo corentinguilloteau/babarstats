@@ -7,6 +7,9 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter } from "react-router-dom";
 
 class Main extends React.Component {
+
+    updateTimer = null;
+
 	constructor(props) {
 		super(props);
 
@@ -32,9 +35,14 @@ class Main extends React.Component {
 			})
 			.then(
 				(result) => {
+                    console.log("get status")
 					this.setState({
 						serverStatus: result,
 					});
+                    if(result === "1")
+                    {
+                        this.updateTimer = setTimeout(() => this.getStatus(), 5000)
+                    }
 				},
 				(error) => {
                     console.log(error)
@@ -45,6 +53,10 @@ class Main extends React.Component {
 	componentDidMount() {
 		this.getStatus();
 	}
+
+    componentWillUnmount() {
+        clearTimeout(this.updateTimer);
+      }
 
 	render() {
 		const isSidebarCollapsed = this.state.isSidebarCollapsed;
@@ -75,6 +87,7 @@ class Main extends React.Component {
 						]}
 						activeItemId={0}
                         serverStatus={this.state.serverStatus}
+                        updateCb={this.getStatus}
 					/>
 					<div className="main">
 						<nav className="navbar">

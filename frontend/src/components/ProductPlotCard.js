@@ -9,6 +9,7 @@ class ProductPlotCard extends React.Component {
 		this.state = {
 			data: [],
 			layout: {},
+            loaded: false
 		};
 	}
 
@@ -82,6 +83,7 @@ class ProductPlotCard extends React.Component {
 		this.setState({
 			layout: layout,
 			data: [hist_trace],
+            loaded: true
 		});
 	}
 
@@ -121,6 +123,9 @@ class ProductPlotCard extends React.Component {
 	}
 
 	componentDidMount() {
+        this.setState({
+			loaded: false
+		});
         fetch(
 				this.props.apiURL,
 			{
@@ -148,11 +153,12 @@ class ProductPlotCard extends React.Component {
 
 	render() {
 		return (
-			<TimeSerieCard
+            <TimeSerieCard
                 bootstrapSubdiv={this.props.bootstrapSubdiv || "col d-flex"}
 				layout={this.state.layout}
 				data={this.state.data}
 				name={this.props.name}
+                loaded={this.state.loaded}
 			/>
 		);
 	}

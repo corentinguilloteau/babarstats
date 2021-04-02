@@ -9,6 +9,7 @@ class ConsoPlotCard extends React.Component {
 		this.state = {
 			data: [],
 			layout: {},
+            loaded: false
 		};
 	}
 
@@ -100,6 +101,7 @@ class ConsoPlotCard extends React.Component {
 		this.setState({
 			layout: layout,
 			data: [trace, hist_trace],
+            loaded: true
 		});
 	}
 
@@ -148,6 +150,9 @@ class ConsoPlotCard extends React.Component {
 	}
 
 	componentDidMount() {
+        this.setState({
+            loaded: false
+		});
         fetch(
 				this.props.apiURL,
 			{
@@ -179,6 +184,7 @@ class ConsoPlotCard extends React.Component {
 				layout={this.state.layout}
 				data={this.state.data}
 				name={this.props.name}
+                loaded={this.state.loaded}
 			/>
 		);
 	}

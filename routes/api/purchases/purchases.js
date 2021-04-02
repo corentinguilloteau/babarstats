@@ -65,11 +65,11 @@ router.get("/purchases/money/today", auth.ensureAuth, function (req, res, next) 
 
     purchasesPrice = purchases.map(p => {
         
-        return parseInt(parseFloat(req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(p.product)).price)*100);
+        return parseInt(Math.round(req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(p.product)).price*100));
     });
 
     res.status(200);
-	res.end(((purchasesPrice.reduce((a, b) => a + b, 0.0))/100).toString());
+	res.end(((purchasesPrice.reduce((a, b) => a + b, 0))/100).toString());
 });
 
 router.get('/purchases/history', auth.ensureAuth, function (req, res, next) {
@@ -78,8 +78,11 @@ router.get('/purchases/history', auth.ensureAuth, function (req, res, next) {
     purchases = purchases.map(p => {
         var newP = {}
 
-        newP.customer = req.app.get("customers").find(c => parseInt(p.customer) == parseInt(c.pk)).nickname;
-        newP.product = req.app.get("products").find(c => parseInt(p.product) == parseInt(c.pk)).name;
+        customer = req.app.get("customers").find(c => parseInt(p.customer) == parseInt(c.pk));
+        product = req.app.get("products").find(c => parseInt(p.product) == parseInt(c.pk));
+
+        newP.customer = {value: customer.nickname, id: customer.pk, href: "/clients/" }
+        newP.product = {value: product.name, id: product.pk, href: "/products/" }
 
         var timestamp = new Date(Date.parse(p.timestamp));
         

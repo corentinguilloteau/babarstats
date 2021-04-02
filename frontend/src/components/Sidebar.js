@@ -20,7 +20,7 @@ class Sidebar extends React.Component {
 	}
 
 	getLatestUpdate() {
-		fetch("http://localhost:5000/api/update", {
+		fetch("/api/update", {
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/plain-text",
@@ -45,9 +45,9 @@ class Sidebar extends React.Component {
 
 	update() {
 		var self = this;
-		fetch("http://localhost:5000/api/update", { method: "POST" }).then(
+		fetch("/api/update", { method: "POST" }).then(
 			(res) => {
-				self.props.updateCb();
+				self.props.updateCb(true);
 			}
 		);
 	}
@@ -95,7 +95,7 @@ class Sidebar extends React.Component {
 					</div>
 					<div
 						className="sidebar-footer-item clickable"
-						onClick={this.update}>
+						onClick={this.update.bind(this)}>
 						Mettre à jour
 					</div>
 					<br />

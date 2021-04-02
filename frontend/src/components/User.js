@@ -14,7 +14,7 @@ class User extends React.Component {
 
 	getName() {
 		fetch(
-			"http://localhost:5000/api/clients/" +
+			"/api/clients/" +
 				this.props.match.params.id +
 				"/profil",
 			{
@@ -57,7 +57,7 @@ class User extends React.Component {
 				<div className="row">
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/clients/" +
+							"/api/clients/" +
 							this.props.match.params.id +
 							"/spent"
 						}
@@ -68,7 +68,7 @@ class User extends React.Component {
 					/>
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/clients/" +
+							"/api/clients/" +
 							this.props.match.params.id +
 							"/rank/promo"
 						}
@@ -79,7 +79,7 @@ class User extends React.Component {
 					/>
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/clients/" +
+							"/api/clients/" +
 							this.props.match.params.id +
 							"/rank/total"
 						}
@@ -91,23 +91,23 @@ class User extends React.Component {
 				</div>
                 <div className="row">
                     <ConsoPlotCard name="Historique" apiURL={
-							"http://localhost:5000/api/clients/" +
+							"/api/clients/" +
 							this.props.match.params.id +
 							"/purchases"
 						}/>
                 </div>
                 <div className="row">
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique" apiURL={ 'http://localhost:5000/api/clients/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique" apiURL={ '/api/clients/' +
 							this.props.match.params.id + '/history'} pageSize={10} header={
                         [
-                            { name: "Produit", apiKey: "product" },
+                            { name: "Produit", apiKey: "product", href: true },
                             { name: "Date", apiKey: "datetime" }
                         ]
                     }/>
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommation" apiURL={ 'http://localhost:5000/api/clients/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommation" apiURL={ '/api/clients/' +
 							this.props.match.params.id + '/top_products'} pageSize={10} header={
                         [
-                            { name: "Produit", apiKey: "product" },
+                            { name: "Produit", apiKey: "product", href: true },
                             { name: "Quantité", apiKey: "quantity" }
                         ]
                     }/>

@@ -20,7 +20,7 @@ class Users extends React.Component {
                 </div>
             </div>
             <div className="row">
-                <TableCard name="Produits" apiURL='http://localhost:5000/api/products' baseURL='/products/' buttonText="Détails" idField="id" header={
+                <TableCard name="Produits" apiURL='/api/products' baseURL='/products/' buttonText="Détails" idField="id" header={
                     [
                         { name: "Nom", apiKey: "name" },
                         { name: "Nombre vendu", apiKey: "count" },

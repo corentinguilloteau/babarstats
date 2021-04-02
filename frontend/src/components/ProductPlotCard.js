@@ -2,6 +2,7 @@ import React from "react";
 import "../css/Card.css";
 import moment from "moment";
 import TimeSerieCard from "./TimeSerieCard";
+import { connect } from "react-redux";
 
 class ProductPlotCard extends React.Component {
 	constructor(props) {
@@ -9,7 +10,7 @@ class ProductPlotCard extends React.Component {
 		this.state = {
 			data: [],
 			layout: {},
-            loaded: false
+			loaded: false,
 		};
 	}
 
@@ -35,7 +36,7 @@ class ProductPlotCard extends React.Component {
 		var layout = {
 			bargap: 0.1,
 			bargroupgap: 0.2,
-            showlegend: false,
+			showlegend: false,
 			barmode: "overlay",
 			xaxis: {
 				autorange: true,
@@ -61,8 +62,7 @@ class ProductPlotCard extends React.Component {
 							step: "month",
 							stepmode: "backward",
 						},
-						{ step: "all",
-                            label: "Tout" },
+						{ step: "all", label: "Tout" },
 					],
 				},
 				rangeslider: {
@@ -72,7 +72,8 @@ class ProductPlotCard extends React.Component {
 					],
 				},
 				type: "date",
-			}, yaxis: {
+			},
+			yaxis: {
 				title: "Vente journalière",
 				titlefont: { color: "rgb(255, 127, 14)" },
 				tickfont: { color: "rgb(255, 127, 14)" },
@@ -83,7 +84,7 @@ class ProductPlotCard extends React.Component {
 		this.setState({
 			layout: layout,
 			data: [hist_trace],
-            loaded: true
+			loaded: true,
 		});
 	}
 
@@ -122,19 +123,16 @@ class ProductPlotCard extends React.Component {
 		this.display(hist);
 	}
 
-	componentDidMount() {
-        this.setState({
-			loaded: false
+	fetchData() {
+		this.setState({
+			loaded: false,
 		});
-        fetch(
-				this.props.apiURL,
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-			}
-		)
+		fetch(this.props.apiURL, {
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+		})
 			.then((res) => {
 				return res.json();
 			})
@@ -146,22 +144,38 @@ class ProductPlotCard extends React.Component {
 				// instead of a catch() block so that we don't swallow
 				// exceptions from actual bugs in components.
 				(error) => {
-                    console.log(error);
-                }
+					console.log(error);
+				}
 			);
-    }
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.updateEvent !== prevProps.updateEvent) {
+			this.fetchData();
+		}
+	}
+
+	componentDidMount() {
+		this.fetchData();
+	}
 
 	render() {
 		return (
-            <TimeSerieCard
-                bootstrapSubdiv={this.props.bootstrapSubdiv || "col d-flex"}
+			<TimeSerieCard
+				bootstrapSubdiv={this.props.bootstrapSubdiv || "col d-flex"}
 				layout={this.state.layout}
 				data={this.state.data}
 				name={this.props.name}
-                loaded={this.state.loaded}
+				loaded={this.state.loaded}
 			/>
 		);
 	}
 }
 
-export default ProductPlotCard;
+const mapStateToProps = function (state) {
+	return {
+		updateEvent: state.updateEvent,
+	};
+};
+
+export default connect(mapStateToProps)(ProductPlotCard);

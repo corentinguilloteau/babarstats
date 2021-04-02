@@ -2,6 +2,7 @@ import React from "react";
 import "../css/Card.css";
 import moment from "moment";
 import TimeSerieCard from "./TimeSerieCard";
+import { connect } from "react-redux";
 
 class ConsoPlotCard extends React.Component {
 	constructor(props) {
@@ -9,7 +10,7 @@ class ConsoPlotCard extends React.Component {
 		this.state = {
 			data: [],
 			layout: {},
-            loaded: false
+			loaded: false,
 		};
 	}
 
@@ -33,8 +34,6 @@ class ConsoPlotCard extends React.Component {
 			line: { color: "#EF78B1" },
 		};
 
-		console.log(hist);
-
 		var hist_trace = {
 			x: this.unpack(hist, "x"),
 			y: this.unpack(hist, "y"),
@@ -46,7 +45,7 @@ class ConsoPlotCard extends React.Component {
 		var layout = {
 			bargap: 0.1,
 			bargroupgap: 0.2,
-            showlegend: false,
+			showlegend: false,
 			barmode: "overlay",
 			xaxis: {
 				autorange: true,
@@ -72,8 +71,7 @@ class ConsoPlotCard extends React.Component {
 							step: "month",
 							stepmode: "backward",
 						},
-						{ step: "all",
-                            label: "Tout" },
+						{ step: "all", label: "Tout" },
 					],
 				},
 				rangeslider: {
@@ -101,7 +99,7 @@ class ConsoPlotCard extends React.Component {
 		this.setState({
 			layout: layout,
 			data: [trace, hist_trace],
-            loaded: true
+			loaded: true,
 		});
 	}
 
@@ -149,19 +147,16 @@ class ConsoPlotCard extends React.Component {
 		this.display(data, hist);
 	}
 
-	componentDidMount() {
-        this.setState({
-            loaded: false
+	fetchData() {
+		this.setState({
+			loaded: false,
 		});
-        fetch(
-				this.props.apiURL,
-			{
-				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
-				},
-			}
-		)
+		fetch(this.props.apiURL, {
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+		})
 			.then((res) => {
 				return res.json();
 			})
@@ -173,10 +168,20 @@ class ConsoPlotCard extends React.Component {
 				// instead of a catch() block so that we don't swallow
 				// exceptions from actual bugs in components.
 				(error) => {
-                    console.log(error);
-                }
+					console.log(error);
+				}
 			);
-    }
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.updateEvent !== prevProps.updateEvent) {
+			this.fetchData();
+		}
+	}
+
+	componentDidMount() {
+		this.fetchData();
+	}
 
 	render() {
 		return (
@@ -184,10 +189,16 @@ class ConsoPlotCard extends React.Component {
 				layout={this.state.layout}
 				data={this.state.data}
 				name={this.props.name}
-                loaded={this.state.loaded}
+				loaded={this.state.loaded}
 			/>
 		);
 	}
 }
 
-export default ConsoPlotCard;
+const mapStateToProps = function (state) {
+	return {
+		updateEvent: state.updateEvent,
+	};
+};
+
+export default connect(mapStateToProps)(ConsoPlotCard);

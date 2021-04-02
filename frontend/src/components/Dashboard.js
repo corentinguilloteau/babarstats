@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
 				<div className="row">
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/purchases/money/today"
+							"/api/purchases/money/today"
 						}
 						name="Ventes du jour"
 						icon="euro-sign"
@@ -30,7 +30,7 @@ class Dashboard extends React.Component {
 					/>
                     <InformationCard
 						apiURL={
-							"http://localhost:5000/api/purchases/count/today"
+							"/api/purchases/count/today"
 						}
 						name="Nombre de consos aujourd'hui"
 						icon="beer"
@@ -38,7 +38,7 @@ class Dashboard extends React.Component {
 					/>
                     <InformationCard
 						apiURL={
-							"http://localhost:5000/api/purchases/count/yesterday"
+							"/api/purchases/count/yesterday"
 						}
 						name="Nombre de consos hier"
 						icon="beer"
@@ -47,19 +47,19 @@ class Dashboard extends React.Component {
 				</div>
 				<div className="row">
                     <ProductPlotCard name="Historique des ventes" apiURL={
-							"http://localhost:5000/api/purchases"
+							"/api/purchases"
 						}
                         bootstrapSubdiv={"col-12 col-sm-8 d-flex"}/>
 					<TableCard
 						bootstrapSubdiv="col-12 col-sm-4 d-flex"
 						name="Dernières consos"
 						apiURL={
-							"http://localhost:5000/api/purchases/history"
+							"/api/purchases/history"
 						}
 						pageSize={14}
 						header={[
-							{ name: "Surnom", apiKey: "customer" },
-							{ name: "Produit", apiKey: "product" },
+							{ name: "Surnom", apiKey: "customer", href: true },
+							{ name: "Produit", apiKey: "product", href: true },
 							{ name: "Date", apiKey: "date" },
 						]}
 					/>

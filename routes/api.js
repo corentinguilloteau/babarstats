@@ -1,6 +1,5 @@
 var express = require("express");
 var router = express.Router();
-const axios = require("axios");
 const dataMan = require("../data");
 const auth = require("../auth");
 

@@ -1,19 +1,20 @@
 import React from "react";
 import "../css/Card.css";
+import { connect } from "react-redux";
 
 class InformationCard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			value: "",
-            loaded: false
+			loaded: false,
 		};
 	}
 
 	getValue() {
-        this.setState({
-            loaded: false,
-        });
+		this.setState({
+			loaded: false,
+		});
 		fetch(this.props.apiURL, {
 			headers: {
 				"Content-Type": "application/json",
@@ -25,10 +26,9 @@ class InformationCard extends React.Component {
 			})
 			.then(
 				(result) => {
-					console.log(result);
 					this.setState({
 						value: result,
-                        loaded: true
+						loaded: true,
 					});
 				},
 				// Note: it's important to handle errors here
@@ -42,6 +42,12 @@ class InformationCard extends React.Component {
 		this.getValue();
 	}
 
+	componentDidUpdate(prevProps) {
+		if (this.props.updateEvent !== prevProps.updateEvent) {
+			this.getValue();
+		}
+	}
+
 	render() {
 		return (
 			<div
@@ -50,11 +56,13 @@ class InformationCard extends React.Component {
 				<div className="card">
 					<div className="card-body py-4">
 						{!this.state.loaded && (
-							<div className="spinner-container"><div
-								class="spinner-border text-primary"
-								role="status">
-								<span class="sr-only">Loading...</span>
-							</div></div>
+							<div className="spinner-container">
+								<div
+									className="spinner-border text-primary"
+									role="status">
+									<span className="sr-only">Loading...</span>
+								</div>
+							</div>
 						)}
 						{this.state.loaded && (
 							<div className="media">
@@ -88,4 +96,10 @@ class InformationCard extends React.Component {
 	}
 }
 
-export default InformationCard;
+const mapStateToProps = function (state) {
+	return {
+		updateEvent: state.updateEvent,
+	};
+};
+
+export default connect(mapStateToProps)(InformationCard);

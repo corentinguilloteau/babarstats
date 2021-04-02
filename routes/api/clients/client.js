@@ -73,7 +73,7 @@ router.get("/:id/history", auth.ensureAuth, function (req, res, next) {
 
         var product = req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(p.product));
 
-        var newP = { product: product.name, datetime: date };
+        var newP = { product: {value: product.name, id: product.pk, href: "/products/"}, datetime: date };
 
         return newP;
     });
@@ -127,7 +127,7 @@ router.get("/:id/top_products", auth.ensureAuth, function (req, res, next) {
     var mappedCounts = countsExtended.map(c => {
         var product = req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(c.product));
 
-        return { product: product.name, quantity: c.count };
+        return { product: {value: product.name, id: product.pk, href: "/products/"}, quantity: c.count };
     })
 
     mappedCounts = mappedCounts.sort(function(a, b){return b.quantity - a.quantity})

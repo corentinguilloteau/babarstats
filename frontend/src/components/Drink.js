@@ -14,7 +14,7 @@ class User extends React.Component {
 
 	getName() {
 		fetch(
-			"http://localhost:5000/api/products/" +
+			"/api/products/" +
 				this.props.match.params.id +
 				"/data",
 			{
@@ -57,7 +57,7 @@ class User extends React.Component {
 				<div className="row">
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/products/" +
+							"/api/products/" +
 							this.props.match.params.id +
 							"/price"
 						}
@@ -68,7 +68,7 @@ class User extends React.Component {
 					/>
 					<InformationCard
 						apiURL={
-							"http://localhost:5000/api/products/" +
+							"/api/products/" +
 							this.props.match.params.id +
 							"/quantity_sold"
 						}
@@ -79,20 +79,20 @@ class User extends React.Component {
 				</div>
                 <div className="row">
                     <ProductPlotCard name="Historique des ventes" apiURL={
-							"http://localhost:5000/api/products/" +
+							"/api/products/" +
 							this.props.match.params.id +
 							"/purchases"
 						}/>
                 </div>
                 <div className="row">
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique des ventes" apiURL={ 'http://localhost:5000/api/products/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique des ventes" apiURL={ '/api/products/' +
 							this.props.match.params.id + '/history'} pageSize={10} header={
                         [
                             { name: "Surnom", apiKey: "customer" },
                             { name: "Date", apiKey: "datetime" }
                         ]
                     }/>
-                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommateur" apiURL={ 'http://localhost:5000/api/products/' +
+                    <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommateur" apiURL={ '/api/products/' +
 							this.props.match.params.id + '/top_customers'} pageSize={10} header={
                         [
                             { name: "Surnom", apiKey: "customer" },

@@ -1,105 +1,151 @@
 var express = require("express");
 var router = express.Router();
 const global = require("../../../global");
-var moment = require('moment');
+var moment = require("moment");
 const auth = require("../../../auth");
+const {
+	Worker
+} = require("worker_threads");
 
 /* GET client purchase history */
 router.get("/purchases", auth.ensureAuth, function (req, res, next) {
+	
+    const worker = new Worker(__dirname + "/../../../workers/purchases.js", {
+		workerData: {
+			purchases: req.app.get("purchases")
+		},
+	});
 
-    var purchases = req.app.get("purchases").filter(p => parseInt(p.timestamp.slice(0, 4)) > 2003);
+	worker.on("message", (data) => {
+		res.status(200);
+		res.end(data);
+	});
 
-	res.status(200);
-	res.end(JSON.stringify(purchases));
+	//JSON.stringify(purchases.reverse()
+	worker.on("error", (err) => {
+        console.log(err.message)
+        console.log(err)
+		res.status(500).json({ message: err.message });
+		res.end();
+	});
 });
 
 /* GET all clients summary */
-router.get("/purchases/count/today", auth.ensureAuth, function (req, res, next) {
+router.get(
+	"/purchases/count/today",
+	auth.ensureAuth,
+	function (req, res, next) {
+		var purchases = req.app.get("purchases");
 
-	var purchases = req.app.get("purchases");
+		var today = moment(new Date(Date.now()))
+			.subtract(6, "hours")
+			.set("hours", 0)
+			.set("minutes", 0)
+			.set("seconds", 0)
+			.set("milliseconds", 0)
+            .add(6, 'hours')
+			.toDate();
 
-    var now = moment().subtract(6, 'hours');
+		purchases = purchases.filter((p) => {
+			var date = new Date(p.timestamp);
 
-    purchases = purchases.filter((p) => {
-        
-        var date = moment(p.timestamp).subtract(6, 'hours');
+			return date - today > 0;
+		});
 
-        return (date.dayOfYear() == now.dayOfYear() && date.year() == now.year());
-    });
-
-    res.status(200);
-	res.end(purchases.length.toString());
-});
-
-/* GET all clients summary */
-router.get("/purchases/count/yesterday", auth.ensureAuth, function (req, res, next) {
-
-	var purchases = req.app.get("purchases");
-
-    var now = moment().subtract(6, 'hours').subtract(1, 'days');
-
-    purchases = purchases.filter((p) => {
-        
-        var date = moment(p.timestamp).subtract(6, 'hours');
-
-        return (date.dayOfYear() == now.dayOfYear() && date.year() == now.year());
-    });
-
-    res.status(200);
-	res.end(purchases.length.toString());
-});
+		res.status(200);
+		res.end(purchases.length.toString());
+	}
+);
 
 /* GET all clients summary */
-router.get("/purchases/money/today", auth.ensureAuth, function (req, res, next) {
+router.get(
+	"/purchases/count/yesterday",
+	auth.ensureAuth,
+	function (req, res, next) {
+		var purchases = req.app.get("purchases");
 
-	var purchases = req.app.get("purchases");
+		var today = moment(new Date(Date.now()))
+			.subtract(6, "hours")
+            .subtract(1, "days")
+			.set("hours", 0)
+			.set("minutes", 0)
+			.set("seconds", 0)
+			.set("milliseconds", 0)
+            .add(6, 'hours')
+			.toDate();
 
-    var now = moment().subtract(6, 'hours');
+		purchases = purchases.filter((p) => {
+			var date = new Date(p.timestamp);
 
-    purchases = purchases.filter((p) => {
-        
-        var date = moment(p.timestamp).subtract(6, 'hours');
+			var diff = date - today;
 
-        return (date.dayOfYear() == now.dayOfYear() && date.year() == now.year());
-    });
+			return diff > 0 && diff <= 24 * 60 * 60 * 1000;
+		});
 
-    purchasesPrice = purchases.map(p => {
-        
-        return parseInt(Math.round(req.app.get("products").find(pr => parseInt(pr.pk) == parseInt(p.product)).price*100));
-    });
+		res.status(200);
+		res.end(purchases.length.toString());
+	}
+);
 
-    res.status(200);
-	res.end(((purchasesPrice.reduce((a, b) => a + b, 0))/100).toString());
+/* GET all clients summary */
+router.get(
+	"/purchases/money/today",
+	auth.ensureAuth,
+	function (req, res, next) {
+		var purchases = req.app.get("purchases");
+
+		var today = moment(new Date(Date.now()))
+			.subtract(6, "hours")
+			.set("hours", 0)
+			.set("minutes", 0)
+			.set("seconds", 0)
+			.set("milliseconds", 0)
+            .add(6, 'hours')
+			.toDate();
+
+		purchases = purchases.filter((p) => {
+			var date = new Date(p.timestamp);
+
+			return date - today > 0;
+		});
+
+		purchasesPrice = purchases.map((p) => {
+			return parseInt(
+				Math.round(
+					req.app
+						.get("products")
+						.find((pr) => parseInt(pr.pk) == parseInt(p.product))
+						.price * 100
+				)
+			);
+		});
+
+		res.status(200);
+		res.end((purchasesPrice.reduce((a, b) => a + b, 0) / 100).toString());
+	}
+);
+
+router.get("/purchases/history", auth.ensureAuth, function (req, res, next) {
+	const worker = new Worker(__dirname + "/../../../workers/purchasesHistory.js", {
+		workerData: {
+			purchases: req.app.get("purchases"),
+			customers: req.app.get("processedCustomers"),
+			products: req.app.get("processedProducts"),
+		},
+	});
+
+	worker.on("message", (data) => {
+		res.status(200);
+		res.end(data);
+	});
+
+	//JSON.stringify(purchases.reverse()
+	worker.on("error", (err) => {
+        console.log(err.message)
+        console.log(err)
+		res.status(500).json({ message: err.message });
+		res.end();
+	});
 });
-
-router.get('/purchases/history', auth.ensureAuth, function (req, res, next) {
-    var purchases = req.app.get("purchases");
-
-    purchases = purchases.map(p => {
-        var newP = {}
-
-        customer = req.app.get("customers").find(c => parseInt(p.customer) == parseInt(c.pk));
-        product = req.app.get("products").find(c => parseInt(p.product) == parseInt(c.pk));
-
-        newP.customer = {value: customer.nickname, id: customer.pk, href: "/clients/" }
-        newP.product = {value: product.name, id: product.pk, href: "/products/" }
-
-        var timestamp = new Date(Date.parse(p.timestamp));
-        
-        var mm = timestamp.getMonth() + 1; // getMonth() is zero-based
-        var dd = timestamp.getDate();
-        var hh = timestamp.getHours();
-        var MM = timestamp.getMinutes();
-
-        var date = "Le " + (dd>9 ? '' : '0') + dd + "/" + (mm>9 ? '' : '0') + mm + "/" + timestamp.getFullYear() + " à " + (hh>9 ? '' : '0') + hh + "h" + (MM>9 ? '' : '0') + MM;
-
-        newP.date = date;
-
-        return newP;
-    });
-
-    res.status(200);
-	res.end(JSON.stringify(purchases.reverse()));
-})
 
 module.exports = router;

@@ -88,14 +88,14 @@ class User extends React.Component {
                     <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Historique des ventes" apiURL={ '/api/products/' +
 							this.props.match.params.id + '/history'} pageSize={10} header={
                         [
-                            { name: "Surnom", apiKey: "customer" },
+                            { name: "Surnom", apiKey: "customer", href: true },
                             { name: "Date", apiKey: "datetime" }
                         ]
                     }/>
                     <TableCard bootstrapSubdiv="col-12 col-sm-6" name="Top consommateur" apiURL={ '/api/products/' +
 							this.props.match.params.id + '/top_customers'} pageSize={10} header={
                         [
-                            { name: "Surnom", apiKey: "customer" },
+                            { name: "Surnom", apiKey: "customer", href: true },
                             { name: "Quantité", apiKey: "quantity" }
                         ]
                     }/>

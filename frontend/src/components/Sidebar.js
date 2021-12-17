@@ -32,8 +32,7 @@ class Sidebar extends React.Component {
 			.then(
 				(result) => {
 					this.setState({
-						latestUpdate:
-							this.props.serverStatus === "0" ? result : "N/C",
+						latestUpdate: this.props.serverStatus === "0" ? result : "N/C",
 					});
 				},
 				// Note: it's important to handle errors here
@@ -45,11 +44,9 @@ class Sidebar extends React.Component {
 
 	update() {
 		var self = this;
-		fetch("/api/update", { method: "POST" }).then(
-			(res) => {
-				self.props.updateCb(true);
-			}
-		);
+		fetch("/api/update", { method: "POST" }).then((res) => {
+			self.props.updateCb(true);
+		});
 	}
 
 	componentDidMount() {
@@ -64,27 +61,16 @@ class Sidebar extends React.Component {
 
 	render() {
 		return (
-			<nav
-				id="sidebar"
-				className={
-					"sidebar " + (this.props.collapsed ? "collapsed" : "")
-				}>
+			<nav id="sidebar" className={"sidebar " + (this.props.collapsed ? "collapsed" : "")}>
 				<div className="sidebar-top"></div>
 				<ul className="sidebar-nav">
 					{this.props.items.map((item) => (
 						<li
 							key={item.id}
-							className={
-								"sidebar-item " +
-								(item.link === this.props.location.pathname
-									? "active"
-									: "")
-							}>
+							className={"sidebar-item " + (item.link === this.props.location.pathname ? "active" : "")}>
 							<Link to={item.link} className="sidebar-link">
 								<i className={"fas fa-fw fa-" + item.icon}></i>
-								<span className="align-middle">
-									{item.name}
-								</span>
+								<span className="align-middle">{item.name}</span>
 							</Link>
 						</li>
 					))}
@@ -93,15 +79,11 @@ class Sidebar extends React.Component {
 					<div className="sidebar-footer-item">
 						Dernière mise à jour le <br /> {this.state.latestUpdate}
 					</div>
-					<div
-						className="sidebar-footer-item clickable"
-						onClick={this.update.bind(this)}>
+					<div className="sidebar-footer-item clickable" onClick={this.update.bind(this)}>
 						Mettre à jour
 					</div>
 					<br />
-					<div className="sidebar-footer-item">
-						v1.0 - Pour le Baritech
-					</div>
+					<div className="sidebar-footer-item">v1.1 - Pour le Baritech</div>
 					<br />
 				</div>
 			</nav>

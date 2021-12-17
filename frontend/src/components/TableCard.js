@@ -16,9 +16,8 @@ class TableCard extends React.Component {
 		};
 	}
 
-    getData()
-    {
-        this.setState({
+	getData() {
+		this.setState({
 			loaded: false,
 		});
 		fetch(this.props.apiURL, {
@@ -46,19 +45,17 @@ class TableCard extends React.Component {
 					console.log(error);
 				}
 			);
-    }
+	}
 
 	componentDidMount() {
 		this.getData();
 	}
 
-    componentDidUpdate(prevProps)
-    {
-        if(this.props.updateEvent !== prevProps.updateEvent)
-        {
-            this.getData();
-        }
-    }
+	componentDidUpdate(prevProps) {
+		if (this.props.updateEvent !== prevProps.updateEvent) {
+			this.getData();
+		}
+	}
 
 	buttonCellRenderer(params) {
 		return (
@@ -71,26 +68,14 @@ class TableCard extends React.Component {
 		);
 	}
 
-    linkCellRender(params)
-    {
-        return (
-			'<a href="' +
-			params.value.href +
-			params.value.id +
-			'/">' +
-			params.value.value +
-			"</a>"
-		);
-    }
+	linkCellRender(params) {
+		return '<a href="' + params.value.href + params.value.id + '/">' + params.value.value + "</a>";
+	}
 
 	autosizeColumnsIfNeeded(params) {
 		let availableWidth = params.api.gridPanel.eBodyViewport.clientWidth;
-		let columns = params.api["gridPanel"][
-			"columnController"
-		].getAllDisplayedColumns();
-		let usedWidth = params.api["gridPanel"][
-			"columnController"
-		].getWidthOfColsInList(columns);
+		let columns = params.api["gridPanel"]["columnController"].getAllDisplayedColumns();
+		let usedWidth = params.api["gridPanel"]["columnController"].getWidthOfColsInList(columns);
 
 		if (usedWidth < availableWidth) {
 			params.api.sizeColumnsToFit();
@@ -116,36 +101,28 @@ class TableCard extends React.Component {
 		}
 	}
 
-
-
-    getColumn(h)
-    {
-        if(h.href)
-        {
-            return(<AgGridColumn
-                headerName={h.name}
-                field={h.apiKey}
-                sortable={this.props.sort || false}
-                filter={this.props.filter || false}
-                floatingFilter={
-                    this.props.floatingFilter ||
-                    false
-                }
-                cellRenderer={this.linkCellRender.bind(this)}></AgGridColumn>);
-        }
-        else
-        {
-            return(<AgGridColumn
-                headerName={h.name}
-                field={h.apiKey}
-                sortable={this.props.sort || false}
-                filter={this.props.filter || false}
-                floatingFilter={
-                    this.props.floatingFilter ||
-                    false
-                }></AgGridColumn>);
-        }
-    }
+	getColumn(h) {
+		if (h.href) {
+			return (
+				<AgGridColumn
+					headerName={h.name}
+					field={h.apiKey}
+					sortable={this.props.sort || false}
+					filter={this.props.filter || false}
+					floatingFilter={this.props.floatingFilter || false}
+					cellRenderer={this.linkCellRender.bind(this)}></AgGridColumn>
+			);
+		} else {
+			return (
+				<AgGridColumn
+					headerName={h.name}
+					field={h.apiKey}
+					sortable={this.props.sort || false}
+					filter={this.props.filter || false}
+					floatingFilter={this.props.floatingFilter || false}></AgGridColumn>
+			);
+		}
+	}
 
 	render() {
 		return (
@@ -157,43 +134,32 @@ class TableCard extends React.Component {
 					{!this.state.loaded && (
 						<div className="card-body py-4">
 							<div className="spinner-container">
-								<div
-									className="spinner-border text-primary"
-									role="status">
+								<div className="spinner-border text-primary" role="status">
 									<span className="sr-only">Loading...</span>
 								</div>
 							</div>
 						</div>
 					)}
 					{this.state.loaded && (
-						<div className="card-body py-2">
-							<div className="ag-theme-material">
+						<div className="card-body py-2 d-flex">
+							<div className="col ag-theme-material d-flex">
 								<AgGridReact
 									rowData={this.state.rowData}
 									onGridReady={this.onGridReady.bind(this)}
 									pagination={true}
-									paginationPageSize={
-										this.props.pageSize || 30
-									}
-									domLayout={"autoHeight"}
+									paginationAutoPageSize={true}
 									suppressCellSelection={true}
 									style={{
 										"min-width": "100%",
 										height: "100%;",
 									}}
-									fullWidthCellRenderer={
-										"fullWidthCellRenderer"
-									}>
-									{this.props.header.map((h) => (
-										this.getColumn(h)
-									))}
+									fullWidthCellRenderer={"fullWidthCellRenderer"}>
+									{this.props.header.map((h) => this.getColumn(h))}
 									{this.props.buttonText && (
 										<AgGridColumn
 											headerName=""
 											field={this.props.idField}
-											cellRenderer={this.buttonCellRenderer.bind(
-												this
-											)}></AgGridColumn>
+											cellRenderer={this.buttonCellRenderer.bind(this)}></AgGridColumn>
 									)}
 								</AgGridReact>
 							</div>
@@ -205,10 +171,10 @@ class TableCard extends React.Component {
 	}
 }
 
-const mapStateToProps = function(state){
-
-    return {
-        updateEvent: state.updateEvent
-  }};
+const mapStateToProps = function (state) {
+	return {
+		updateEvent: state.updateEvent,
+	};
+};
 
 export default connect(mapStateToProps)(TableCard);

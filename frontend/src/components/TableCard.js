@@ -141,17 +141,18 @@ class TableCard extends React.Component {
 						</div>
 					)}
 					{this.state.loaded && (
-						<div className="card-body py-2 d-flex">
-							<div className="col ag-theme-material d-flex">
+						<div className="card-body py-2 d-flex" style={{ "min-height": "180vh" }}>
+							<div className="col ag-theme-material">
 								<AgGridReact
 									rowData={this.state.rowData}
 									onGridReady={this.onGridReady.bind(this)}
 									pagination={true}
-									paginationAutoPageSize={true}
+									paginationAutoPageSize={this.props.pageSize ? false : true}
+									paginationPageSize={this.props.pageSize}
 									suppressCellSelection={true}
 									style={{
 										"min-width": "100%",
-										height: "100%;",
+										height: "100%",
 									}}
 									fullWidthCellRenderer={"fullWidthCellRenderer"}>
 									{this.props.header.map((h) => this.getColumn(h))}

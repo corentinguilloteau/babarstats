@@ -27,6 +27,7 @@ class Users extends React.Component {
 						baseURL="/clients/"
 						buttonText="Voir plus"
 						idField="id"
+						pageSize={30}
 						header={[
 							{ name: "Surnom", apiKey: "surname" },
 							{ name: "Montant dépensé", apiKey: "spent" },

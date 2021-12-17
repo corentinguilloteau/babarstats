@@ -75,10 +75,7 @@ class ConsoPlotCard extends React.Component {
 					],
 				},
 				rangeslider: {
-					range: [
-						this.getDate(data[0].x),
-						this.getDate(data[data.length - 1].x),
-					],
+					range: [this.getDate(data[0].x), this.getDate(data[data.length - 1].x)],
 				},
 				type: "date",
 			},
@@ -123,10 +120,7 @@ class ConsoPlotCard extends React.Component {
 			var date = moment(item.timestamp);
 			date.subtract(6, "hours");
 
-			if (
-				date.dayOfYear() !== current_date.dayOfYear() ||
-				date.year() !== current_date.year()
-			) {
+			if (date.dayOfYear() !== current_date.dayOfYear() || date.year() !== current_date.year()) {
 				hist.push({
 					x: current_date.format("YYYY-MM-DD") + " 00:00:00",
 					y: sub_total,

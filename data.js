@@ -158,7 +158,15 @@ async function loadData(app, nonotify) {
 
 	const res = await fetchData(app);
 
-	if (res == null) return;
+	if (res == null) {
+		// On case fetch failed, we retry in 2 min
+		console.log("Fetch failed, retrying in 2 minutes...");
+		timeout = setTimeout(loadData, 1000 * 60 * 2, app, false);
+
+		if (nonotify) app.set("ready", 0);
+
+		return;
+	}
 
 	console.log("Data is fetched, processing it");
 
